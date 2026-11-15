@@ -1,0 +1,56 @@
+{
+  "split": "dev",
+  "n": 56,
+  "n_defects": 28,
+  "detectors": {
+    "blur": {
+      "n_defects_of_type": 8,
+      "weakest_true_defect_score": 1.524,
+      "strongest_clean_score": 0.064,
+      "gap_ok": true
+    },
+    "dark": {
+      "n_defects_of_type": 6,
+      "weakest_true_defect_score": 1.519,
+      "strongest_clean_score": 0.018,
+      "gap_ok": true
+    },
+    "glare": {
+      "n_defects_of_type": 4,
+      "weakest_true_defect_score": 1.057,
+      "strongest_clean_score": 0.078,
+      "gap_ok": true
+    },
+    "compression": {
+      "n_defects_of_type": 10,
+      "weakest_true_defect_score": 1.32,
+      "strongest_clean_score": 0.332,
+      "gap_ok": true
+    }
+  },
+  "dev_confusion_at_frozen_thresholds": {
+    "tp": 28,
+    "fp": 0,
+    "fn": 0,
+    "tn": 28
+  },
+  "baseline_lap_threshold": {
+    "value": 745.0,
+    "dev_f1": 0.842,
+    "rule": "lap < value => RECAPTURE"
+  },
+  "noref_fallback_values": {
+    "noref_lap_clean_median": 1065.5,
+    "noref_mean_clean_median": 117.7
+  },
+  "frozen_thresholds_in_use": {
+    "blur_lap_rel": -2.5,
+    "dark_bright_rel": -1.0,
+    "glare_sat_rel": 0.005,
+    "glare_bright_rel": 0.2,
+    "comp_block_rel": 1.35,
+    "noref_weight": 0.5,
+    "noref_lap": 500.0,
+    "noref_mean": 100.0
+  }
+}

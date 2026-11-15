@@ -2,8 +2,8 @@
 # Group config — EDIT ME (one per group). Values here override
 # the track defaults loaded from `track_config`.
 # ============================================================
-group_id: G00                     # e.g. G07
-owner: "TODO: tên người ký duyệt (role)"   # mandatory for every Decision
+group_id: G-2A202603187                     # e.g. G07
+owner: "Do Hoang Anh (individual owner / reviewer)"   # mandatory for every Decision
 track_config: tracks/t02.yaml     # pick your challenge: tracks/t01.yaml ... tracks/t14.yaml
 track: t02                        # must match track_config
 input: fixtures/t02_raw_qc        # or data/real/... if your instructor provided a real pack
@@ -13,4 +13,16 @@ offline: true                     # demo/eval must not touch the network
 strict_provenance: true           # fail if manifest.csv hashes do not match
 
 # Track params (merged over track_config.params). Freeze before evaluation.
-params: {}
+params:
+  # FROZEN on the dev split (python -m tools.calibrate_t02) BEFORE any evaluation on eval. Do not change after seeing eval.
+  budget: 20
+  min_group: 3              # scene needs >=3 images to build the sibling reference, else weaker absolute fallback
+  blur_lap_rel: -2.5        # log(lap / scene median)
+  dark_bright_rel: -1.0     # log(mean / scene median)
+  glare_sat_rel: 0.005      # extra saturated-pixel fraction vs siblings
+  glare_bright_rel: 0.2     # log brightness gain vs siblings
+  comp_block_rel: 1.35      # JPEG blockiness ratio vs siblings
+  noref_weight: 0.5
+  noref_lap: 1065.5         # dev clean medians, fallback only
+  noref_mean: 117.7
+  lap_threshold: 745.0      # BASELINE only: single global cut, best dev F1 (lap < value => RECAPTURE)
