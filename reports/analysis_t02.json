@@ -1,0 +1,528 @@
+{
+  "split": "eval",
+  "n": 40,
+  "budget": 20,
+  "n_defects": 20,
+  "thresholds": {
+    "blur_lap_rel": -2.5,
+    "dark_bright_rel": -1.0,
+    "glare_sat_rel": 0.005,
+    "glare_bright_rel": 0.2,
+    "comp_block_rel": 1.35,
+    "noref_weight": 0.5,
+    "noref_lap": 1065.5,
+    "noref_mean": 117.7
+  },
+  "random": {
+    "recall_at_b": 0.5,
+    "recall_ci95": [
+      0.299,
+      0.701
+    ],
+    "tp_in_top_b": 10,
+    "n_defects": 20,
+    "precision_at_b": 0.5,
+    "precision_ci95": [
+      0.299,
+      0.701
+    ],
+    "false_alarms_in_top_b": 10
+  },
+  "baseline": {
+    "recall_at_b": 0.85,
+    "recall_ci95": [
+      0.64,
+      0.948
+    ],
+    "tp_in_top_b": 17,
+    "n_defects": 20,
+    "precision_at_b": 0.85,
+    "precision_ci95": [
+      0.64,
+      0.948
+    ],
+    "false_alarms_in_top_b": 3
+  },
+  "poc": {
+    "recall_at_b": 1.0,
+    "recall_ci95": [
+      0.839,
+      1.0
+    ],
+    "tp_in_top_b": 20,
+    "n_defects": 20,
+    "precision_at_b": 1.0,
+    "precision_ci95": [
+      0.839,
+      1.0
+    ],
+    "false_alarms_in_top_b": 0
+  },
+  "paired_poc_vs_baseline": {
+    "only_poc_found": [
+      "img_01_3",
+      "img_05_3",
+      "img_13_2"
+    ],
+    "only_baseline_found": []
+  },
+  "baseline_slices": [
+    {
+      "slice": "camera_id=cam_A",
+      "n": 28,
+      "n_defects": 14,
+      "recall_in_top_b": 0.786,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 14
+    },
+    {
+      "slice": "camera_id=cam_B",
+      "n": 12,
+      "n_defects": 6,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.5,
+      "n_false_alarms": 3,
+      "n_clean": 6
+    },
+    {
+      "slice": "light=day",
+      "n": 20,
+      "n_defects": 10,
+      "recall_in_top_b": 0.9,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 10
+    },
+    {
+      "slice": "light=dusk",
+      "n": 4,
+      "n_defects": 2,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.5,
+      "n_false_alarms": 1,
+      "n_clean": 2
+    },
+    {
+      "slice": "light=night",
+      "n": 16,
+      "n_defects": 8,
+      "recall_in_top_b": 0.75,
+      "false_alarm_in_top_b": 0.25,
+      "n_false_alarms": 2,
+      "n_clean": 8
+    },
+    {
+      "slice": "defect=blur",
+      "n": 4,
+      "n_defects": 4,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    },
+    {
+      "slice": "defect=compression",
+      "n": 8,
+      "n_defects": 8,
+      "recall_in_top_b": 0.75,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    },
+    {
+      "slice": "defect=dark",
+      "n": 4,
+      "n_defects": 4,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    },
+    {
+      "slice": "defect=glare",
+      "n": 4,
+      "n_defects": 4,
+      "recall_in_top_b": 0.75,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    }
+  ],
+  "poc_slices": [
+    {
+      "slice": "camera_id=cam_A",
+      "n": 28,
+      "n_defects": 14,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 14
+    },
+    {
+      "slice": "camera_id=cam_B",
+      "n": 12,
+      "n_defects": 6,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 6
+    },
+    {
+      "slice": "light=day",
+      "n": 20,
+      "n_defects": 10,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 10
+    },
+    {
+      "slice": "light=dusk",
+      "n": 4,
+      "n_defects": 2,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 2
+    },
+    {
+      "slice": "light=night",
+      "n": 16,
+      "n_defects": 8,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": 0.0,
+      "n_false_alarms": 0,
+      "n_clean": 8
+    },
+    {
+      "slice": "defect=blur",
+      "n": 4,
+      "n_defects": 4,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    },
+    {
+      "slice": "defect=compression",
+      "n": 8,
+      "n_defects": 8,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    },
+    {
+      "slice": "defect=dark",
+      "n": 4,
+      "n_defects": 4,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    },
+    {
+      "slice": "defect=glare",
+      "n": 4,
+      "n_defects": 4,
+      "recall_in_top_b": 1.0,
+      "false_alarm_in_top_b": null,
+      "n_false_alarms": 0,
+      "n_clean": 0
+    }
+  ],
+  "flag_confusion_eval": {
+    "poc": {
+      "tp": 20,
+      "fp": 0,
+      "fn": 0,
+      "tn": 20
+    },
+    "baseline": {
+      "tp": 15,
+      "fp": 3,
+      "fn": 5,
+      "tn": 17
+    }
+  },
+  "ablation": {
+    "full PoC (sibling reference)": {
+      "recall_at_b": 1.0,
+      "recall_ci95": [
+        0.839,
+        1.0
+      ],
+      "precision_at_b": 1.0,
+      "false_alarms_in_top_b": 0,
+      "false_alarm_by_camera": {
+        "camera_id=cam_A": 0.0,
+        "camera_id=cam_B": 0.0
+      },
+      "false_alarm_by_light": {
+        "light=day": 0.0,
+        "light=dusk": 0.0,
+        "light=night": 0.0
+      }
+    },
+    "no sibling reference (absolute fallback only)": {
+      "recall_at_b": 0.65,
+      "recall_ci95": [
+        0.433,
+        0.819
+      ],
+      "precision_at_b": 0.65,
+      "false_alarms_in_top_b": 7,
+      "false_alarm_by_camera": {
+        "camera_id=cam_A": 0.214,
+        "camera_id=cam_B": 0.667
+      },
+      "false_alarm_by_light": {
+        "light=day": 0.0,
+        "light=dusk": 0.0,
+        "light=night": 0.875
+      }
+    },
+    "without blur detector": {
+      "recall_at_b": 0.8,
+      "recall_ci95": [
+        0.584,
+        0.919
+      ],
+      "precision_at_b": 0.8,
+      "false_alarms_in_top_b": 4,
+      "false_alarm_by_camera": {
+        "camera_id=cam_A": 0.286,
+        "camera_id=cam_B": 0.0
+      },
+      "false_alarm_by_light": {
+        "light=day": 0.2,
+        "light=dusk": 0.0,
+        "light=night": 0.25
+      }
+    },
+    "without dark detector": {
+      "recall_at_b": 1.0,
+      "recall_ci95": [
+        0.839,
+        1.0
+      ],
+      "precision_at_b": 1.0,
+      "false_alarms_in_top_b": 0,
+      "false_alarm_by_camera": {
+        "camera_id=cam_A": 0.0,
+        "camera_id=cam_B": 0.0
+      },
+      "false_alarm_by_light": {
+        "light=day": 0.0,
+        "light=dusk": 0.0,
+        "light=night": 0.0
+      }
+    },
+    "without glare detector": {
+      "recall_at_b": 0.9,
+      "recall_ci95": [
+        0.699,
+        0.972
+      ],
+      "precision_at_b": 0.9,
+      "false_alarms_in_top_b": 2,
+      "false_alarm_by_camera": {
+        "camera_id=cam_A": 0.143,
+        "camera_id=cam_B": 0.0
+      },
+      "false_alarm_by_light": {
+        "light=day": 0.2,
+        "light=dusk": 0.0,
+        "light=night": 0.0
+      }
+    },
+    "without compression detector": {
+      "recall_at_b": 0.85,
+      "recall_ci95": [
+        0.64,
+        0.948
+      ],
+      "precision_at_b": 0.85,
+      "false_alarms_in_top_b": 3,
+      "false_alarm_by_camera": {
+        "camera_id=cam_A": 0.143,
+        "camera_id=cam_B": 0.167
+      },
+      "false_alarm_by_light": {
+        "light=day": 0.0,
+        "light=dusk": 0.5,
+        "light=night": 0.25
+      }
+    }
+  },
+  "failure_cases": {
+    "baseline_false_alarms": [
+      {
+        "image_id": "img_06_0",
+        "camera_id": "cam_B",
+        "light": "night",
+        "lap": 275.7
+      },
+      {
+        "image_id": "img_15_0",
+        "camera_id": "cam_B",
+        "light": "dusk",
+        "lap": 313.0
+      },
+      {
+        "image_id": "img_03_0",
+        "camera_id": "cam_B",
+        "light": "night",
+        "lap": 353.5
+      }
+    ],
+    "baseline_misses": [
+      {
+        "image_id": "img_01_3",
+        "camera_id": "cam_A",
+        "light": "night",
+        "defect_type": "compression",
+        "lap": 1094.1
+      },
+      {
+        "image_id": "img_13_2",
+        "camera_id": "cam_A",
+        "light": "night",
+        "defect_type": "compression",
+        "lap": 1206.6
+      },
+      {
+        "image_id": "img_05_3",
+        "camera_id": "cam_A",
+        "light": "day",
+        "defect_type": "glare",
+        "lap": 1324.5
+      }
+    ],
+    "noref_false_alarms": [
+      {
+        "image_id": "img_06_0",
+        "camera_id": "cam_B",
+        "light": "night"
+      },
+      {
+        "image_id": "img_06_1",
+        "camera_id": "cam_B",
+        "light": "night"
+      },
+      {
+        "image_id": "img_01_1",
+        "camera_id": "cam_A",
+        "light": "night"
+      },
+      {
+        "image_id": "img_01_0",
+        "camera_id": "cam_A",
+        "light": "night"
+      },
+      {
+        "image_id": "img_03_1",
+        "camera_id": "cam_B",
+        "light": "night"
+      },
+      {
+        "image_id": "img_03_0",
+        "camera_id": "cam_B",
+        "light": "night"
+      },
+      {
+        "image_id": "img_13_1",
+        "camera_id": "cam_A",
+        "light": "night"
+      }
+    ],
+    "noref_misses": [
+      {
+        "image_id": "img_06_3",
+        "camera_id": "cam_B",
+        "light": "night",
+        "defect_type": "glare"
+      },
+      {
+        "image_id": "img_03_2",
+        "camera_id": "cam_B",
+        "light": "night",
+        "defect_type": "glare"
+      },
+      {
+        "image_id": "img_05_3",
+        "camera_id": "cam_A",
+        "light": "day",
+        "defect_type": "glare"
+      },
+      {
+        "image_id": "img_16_3",
+        "camera_id": "cam_A",
+        "light": "day",
+        "defect_type": "compression"
+      },
+      {
+        "image_id": "img_23_2",
+        "camera_id": "cam_A",
+        "light": "day",
+        "defect_type": "compression"
+      },
+      {
+        "image_id": "img_05_2",
+        "camera_id": "cam_A",
+        "light": "day",
+        "defect_type": "compression"
+      },
+      {
+        "image_id": "img_19_2",
+        "camera_id": "cam_A",
+        "light": "day",
+        "defect_type": "compression"
+      }
+    ]
+  },
+  "clean_lap_by_camera_all_splits": {
+    "cam_A": {
+      "n": 32,
+      "median_lap": 1113.2
+    },
+    "cam_B": {
+      "n": 16,
+      "median_lap": 618.4
+    }
+  },
+  "failure_montage": {
+    "file": "demo/failure_cases_baseline.png",
+    "images": [
+      "img_06_0",
+      "img_15_0",
+      "img_03_0",
+      "img_01_3",
+      "img_13_2",
+      "img_05_3"
+    ]
+  },
+  "baseline_runtime": {
+    "seconds": 0.2881,
+    "n_items": 96,
+    "seconds_per_100_items": 0.3,
+    "machine": {
+      "python": "3.13.13",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "git_sha": "b0ce8bf"
+  },
+  "poc_runtime": {
+    "seconds": 0.3388,
+    "n_items": 96,
+    "seconds_per_100_items": 0.353,
+    "machine": {
+      "python": "3.13.13",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
+    },
+    "git_sha": "b0ce8bf"
+  }
+}
