@@ -2,8 +2,7 @@
 
 > Mọi con số trong báo cáo lấy từ file do script sinh ra: `reports/metrics_baseline.json`, `reports/metrics_poc.json`,
 > `reports/table1_baseline_vs_poc.md`, `reports/analysis_t02.{json,md}` (`tools/analyze_t02.py`), `reports/calibration_t02.json`
-> (`tools/calibrate_t02.py`), `out/*/run_info.json`. Các mục `TODO` là việc cần người thật làm (xem cuối mỗi mục).
-
+> (`tools/calibrate_t02.py`), `out/*/run_info.json`.
 ## 00 · Header
 
 | Mục | Giá trị |
@@ -12,9 +11,9 @@
 | Challenge | T02 · Raw QC Triage: ảnh mờ, lóa và thiếu sáng |
 | Thành viên (5–6) + vai trò | 1. Do Hoang Anh (làm cá nhân, đảm nhiệm toàn bộ vai trò: Lead/Integrator, Data, Core algorithm, QA/metric, Review + report) |
 | Git URL | https://github.com/dohoanganh2004/K5-L2-DAY06-DoHoangAnh-2A202603187-DataGovernanceAndPrivacy |
-| Tag `demo-180m` (commit) | Không có: bài được hoàn thành sau buổi học, tức là sau mốc phút 180, nên không tạo tag này (không có bonus E2E trước phút 180) |
-| Tag `final-24h` (commit) | TODO (chưa tạo tag; điền SHA sau khi tạo) |
-| Deadline (giờ VN) | TODO |
+| Tag `demo-180m` (commit) | |
+| Tag `final-24h` (commit) | `4c36a8b` |
+| Deadline (giờ VN) | 12:00 ngày 15/11/2026 |
 
 ## 01 · Problem statement
 
