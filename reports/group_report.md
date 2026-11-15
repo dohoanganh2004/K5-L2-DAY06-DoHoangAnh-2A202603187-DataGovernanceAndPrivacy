@@ -12,7 +12,7 @@
 | Thành viên (5–6) + vai trò | 1. Do Hoang Anh (làm cá nhân, đảm nhiệm toàn bộ vai trò: Lead/Integrator, Data, Core algorithm, QA/metric, Review + report) |
 | Git URL | https://github.com/dohoanganh2004/K5-L2-DAY06-DoHoangAnh-2A202603187-DataGovernanceAndPrivacy |
 | Tag `demo-180m` (commit) | |
-| Tag `final-24h` (commit) | `4c36a8b` |
+| Tag `final-24h` (commit) | `d1d67bb` |
 | Deadline (giờ VN) | 12:00 ngày 15/11/2026 |
 
 ## 01 · Problem statement
