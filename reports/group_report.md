@@ -13,7 +13,7 @@
 | Thành viên (5–6) + vai trò | 1. Do Hoang Anh (làm cá nhân, đảm nhiệm toàn bộ vai trò: Lead/Integrator, Data, Core algorithm, QA/metric, Review + report) |
 | Git URL | https://github.com/dohoanganh2004/K5-L2-DAY06-DoHoangAnh-2A202603187-DataGovernanceAndPrivacy |
 | Tag `demo-180m` (commit) | Không có: bài được hoàn thành sau buổi học, tức là sau mốc phút 180, nên không tạo tag này (không có bonus E2E trước phút 180) |
-| Tag `final-24h` (commit) | TODO (chưa tạo; chưa commit) |
+| Tag `final-24h` (commit) | TODO (chưa tạo tag; điền SHA sau khi tạo) |
 | Deadline (giờ VN) | TODO |
 
 ## 01 · Problem statement
@@ -55,8 +55,8 @@
 
 ## 04 · Baseline vs PoC
 
-- Baseline (`src/baseline_laplacian.py`): một ngưỡng Laplacian toàn ảnh duy nhất, `lap < 745 → RECAPTURE`, `score = −lap`; 745 chọn trên dev (F1 dev 0.842, `tools/calibrate_t02.py`). Commit: TODO (chưa commit).
-- PoC (`src/qc_features.py` + `src/pipeline.py`, tham số trong `configs/lab.yaml`): như mục 03. Commit: TODO (chưa commit).
+- Baseline (`src/baseline_laplacian.py`): một ngưỡng Laplacian toàn ảnh duy nhất, `lap < 745 → RECAPTURE`, `score = −lap`; 745 chọn trên dev (F1 dev 0.842, `tools/calibrate_t02.py`). Commit: `4b2239a` (code), tham số trong `5b7db6f`.
+- PoC (`src/qc_features.py` + `src/pipeline.py`, tham số trong `configs/lab.yaml`): như mục 03. Commit: `5b7db6f` (`qc_features.py`, ngưỡng) và `4b2239a` (`pipeline.py`); trạng thái code lúc đo: `129a46a`.
 - Cùng budget (B=20) / cùng pool eval (40 ảnh) / cùng seed 42: **xác nhận có**. Baseline dùng chung toàn bộ hạ tầng load/rank/review/decide, chỉ khác `process()`.
 - Mốc tham chiếu: random baseline của repo cho Recall@20 = 0.50 (10/20), Wilson 95% CI (0.299, 0.701).
 
@@ -70,19 +70,19 @@
 | Hard-slice: false alarm, `camera_id=cam_B` | 0.50 (3/6) | 0.00 (0/6) | −0.50; N=6 ảnh sạch |
 | Review@B / miss / FP | miss 3, FP 3 | miss 0, FP 0 | B=20 |
 | Defect-type accuracy (trên 20 ảnh lỗi) | 0.20 | 1.00 | baseline chỉ có nhãn "blur" nên chỉ mang tính tham khảo |
-| Runtime / 100 items | 0.300 s | 0.353 s | CPU Intel64 Family 6 Model 141, Windows 11, Python 3.13.13 |
+| Runtime / 100 items | 0.4376 s | 0.6986 s | CPU Intel64 Family 6 Model 141, Windows 11, Python 3.13.13 |
 
 Ảnh PoC bắt thêm so với baseline: `img_01_3`, `img_13_2`, `img_05_3`; baseline không bắt được ảnh nào mà PoC bỏ sót.
 
 ## 05 · Evaluation protocol
 
 - Công thức primary metric, đơn vị đánh giá, TP/FP/FN, denominator: Recall@20 = (ảnh lỗi thật trong top-20) / (tổng ảnh lỗi thật eval = 20); đơn vị = ảnh; xem `reports/metric_contract.md`.
-- Threshold / budget B / K và lúc chốt: B = 20. Mọi ngưỡng chọn bằng cách quan sát **dev** (`python -m tools.calibrate_t02`, chỉ đọc nhãn dev): cả 4 detector có khoảng trống giữa ảnh lỗi yếu nhất và ảnh sạch mạnh nhất (blur 1.52 vs 0.06; dark 1.52 vs 0.02; glare 1.06 vs 0.08; compression 1.32 vs 0.33 — ngưỡng = 1.0 nằm trong khoảng trống), dev: TP 28, FP 0, FN 0, TN 28. Giá trị đóng băng trong `configs/lab.yaml` → `params`. Commit chốt: TODO (chưa commit).
+- Threshold / budget B / K và lúc chốt: B = 20. Mọi ngưỡng chọn bằng cách quan sát **dev** (`python -m tools.calibrate_t02`, chỉ đọc nhãn dev): cả 4 detector có khoảng trống giữa ảnh lỗi yếu nhất và ảnh sạch mạnh nhất (blur 1.52 vs 0.06; dark 1.52 vs 0.02; glare 1.06 vs 0.08; compression 1.32 vs 0.33 — ngưỡng = 1.0 nằm trong khoảng trống), dev: TP 28, FP 0, FN 0, TN 28. Giá trị đóng băng trong `configs/lab.yaml` → `params`. Commit chứa ngưỡng: `5b7db6f` (2026-11-15 10:42 +0700); commit này được tạo **sau** khi đã có số đo, nhưng ngưỡng không đổi từ lúc chốt trên dev đến lúc commit (xem phần công khai quy trình bên dưới).
 - **Công khai về quy trình:** trước khi có gold set của bạn, một bản prototype đã được chạy và đo trên eval bằng nhãn do trợ lý AI gán; các ngưỡng blur/dark/glare/compression được chọn từ dev và **không đổi sau lần chạy đó**. Riêng hai hằng số của fallback không-ảnh-cùng-cảnh (`noref_lap`, `noref_mean`) được đặt lại theo trung vị ảnh sạch của dev; chúng chỉ ảnh hưởng ablation, không ảnh hưởng số chính. Ảnh eval đã được nhìn bằng mắt khi gán nhãn nhưng không dùng để chọn ngưỡng. Điểm chính thức do giảng viên chấm trên `gt/` và hidden eval, có thể thấp hơn số tự đo.
 - Độ bất định: N = 40 (20 ảnh lỗi); báo Wilson 95% CI (xem Bảng 1). PoC 20/20 có CI dưới 0.839, nên không thể kết luận "hoàn hảo" từ N này.
 - Lệnh evaluate chính xác (gold tự gán):
   `python -m src.evaluate --track t02 --gt reports/my_gold_labels.csv --pred out/poc/ranked_review.csv --run-name poc --out reports/metrics_poc.json`
-  (tương tự `out/baseline/...` → `metrics_baseline.json`). Lưu ý: `metrics_*.json` ghi `git sha b0ce8bf` (HEAD cũ vì chưa commit); sau khi commit cần chạy lại để ghi đúng sha.
+  (tương tự `out/baseline/...` → `metrics_baseline.json`). Các `metrics_*.json` hiện ghi git sha `129a46a` (trạng thái code đã commit, chạy lại sau khi commit).
 
 ## 06 · Result slices
 
@@ -112,7 +112,7 @@
 - **Failure case 1 — camera cam_B mềm hơn (failure mode 3, ảnh `demo/failure_cases_baseline.png`):** baseline có 3 false alarm trong top-20, cả 3 đều là ảnh sạch cam_B: `img_06_0` (night, Laplacian 276), `img_15_0` (dusk, 313), `img_03_0` (night, 354). Root cause: median Laplacian của ảnh sạch là 1113.2 (cam_A, n=32) so với 618.4 (cam_B, n=16), nên một ngưỡng chung không tách được; cam_B mềm là đặc tính camera. PoC so với ảnh cùng cảnh (cùng camera) nên 0/6 false alarm cam_B.
 - **Failure case 2 — lỗi mà Laplacian không thấy (failure mode 2, cùng ảnh):** baseline bỏ sót `img_01_3` và `img_13_2` (night, compression, Laplacian 1094 và 1207) và `img_05_3` (day, glare **cục bộ** ở vùng xe/biển số, Laplacian 1324). Root cause: các ô vuông nén tạo thêm cạnh làm Laplacian *cao*, và vùng chói cục bộ không làm giảm độ nét toàn ảnh. PoC bắt cả 3 nhờ detector compression và glare.
 - **Failure case 3 — ảnh ban đêm (failure mode 1), khi mất ảnh cùng cảnh:** PoC không-ảnh-cùng-cảnh báo nhầm 7/8 ảnh sạch ban đêm (`img_06_0`, `img_06_1`, `img_01_0`, `img_01_1`, `img_03_0`, `img_03_1`, `img_13_1`) và bỏ sót 7/20 ảnh lỗi: glare ban đêm cam_B (`img_06_3`, `img_03_2`), glare ban ngày (`img_05_3`) và 4 ảnh compression ban ngày (`img_16_3`, `img_23_2`, `img_05_2`, `img_19_2`). Root cause: thiếu tham chiếu, ngưỡng tuyệt đối coi ảnh tối/mềm theo bản chất là lỗi, đúng bẫy ảnh đêm của đề.
-- Latency / compute (máy, CPU, ms/item): PoC 0.3388 s / 96 ảnh = 3.5 ms/ảnh (0.353 s/100 ảnh); baseline 0.3 s/100 ảnh; CPU Intel64 Family 6 Model 141 Stepping 1, Windows 11 (`out/*/run_info.json`).
+- Latency / compute (máy, CPU, ms/item): PoC 0.6707 s / 96 ảnh = 7.0 ms/ảnh (0.699 s/100 ảnh); baseline 0.438 s/100 ảnh (thời gian dao động giữa các lần chạy do máy); CPU Intel64 Family 6 Model 141 Stepping 1, Windows 11 (`out/*/run_info.json`).
 
 ## 07 · Human & decision
 
@@ -135,7 +135,7 @@ python -m tools.calibrate_t02 ; python -m tools.analyze_t02
 ```
 
 - Output của `pytest -q` (2026-11-14): `65 passed, 39 skipped` (39 test bị skip cần `gt/` của giảng viên). Có 2 nhóm test của nhóm: `tests/test_t02_pipeline.py` (load/contract/review/override/decision, gồm các case lỗi) và `tests/test_t02_algorithm.py` (detector trên ảnh dựng sẵn, fallback không có ảnh cùng cảnh, tính tất định, hồi quy trên dev).
-- Máy / CPU / OS / Python: Intel64 Family 6 Model 141, Windows 11, Python 3.13.13 · git sha: `b0ce8bf` (HEAD trước thay đổi; **chưa commit**, TODO cập nhật sau khi commit).
+- Máy / CPU / OS / Python: Intel64 Family 6 Model 141, Windows 11, Python 3.13.13 · git sha: `129a46a` (trạng thái code lúc chạy `src.main`/`src.evaluate` lần cuối; các commit tiếp theo chỉ đổi báo cáo).
 
 ## 09 · Limitations & ethics
 
@@ -150,7 +150,7 @@ python -m tools.calibrate_t02 ; python -m tools.analyze_t02
 
 | Học viên | Git author/email | Module / vai trò | Commit SHA / diff chứng minh | Trình bày? |
 |---|---|---|---|---|
-| Do Hoang Anh | dohoanganh2004 / dohoanganh92004@gmail.com | Toàn bộ (làm cá nhân) | TODO (chưa commit) | Có |
+| Do Hoang Anh | dohoanganh2004 / dohoanganh92004@gmail.com | Toàn bộ (làm cá nhân) | `a738bcf`, `5b7db6f`, `4b2239a`, `129a46a` (và các commit sau đó) | Có |
 
 Ghi chú minh bạch: phần lớn code (pipeline, thuật toán, test, script phân tích, bản nháp báo cáo) do trợ lý AI (Claude) viết theo yêu cầu của học viên; công cụ gán nhãn `tools/label_tool.html` cũng do trợ lý viết, còn **nhãn gold do học viên tự gán**. Học viên chịu trách nhiệm kiểm tra và giải thích lại trước khi nộp.
 

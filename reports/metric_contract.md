@@ -14,12 +14,12 @@
 | Candidate pool cố định | 40 ảnh split `eval` (10 cảnh gốc × 4 ảnh) của `fixtures/t02_raw_qc/`. Không thêm/bớt ảnh sau khi chốt. |
 | Review budget B / K | B = 20 |
 | Seed | 42 |
-| Threshold policy (chọn trên dev như thế nào) | Mọi ngưỡng/trọng số chỉ được chọn bằng cách quan sát split **dev** (56 ảnh, 28 ảnh lỗi theo gold set). Giá trị chốt nằm trong `configs/lab.yaml` → `params` (kiểm bằng `python -m tools.calibrate_t02`, chỉ đọc nhãn dev): `blur_lap_rel=-2.5`, `dark_bright_rel=-1.0`, `glare_sat_rel=0.005`, `glare_bright_rel=0.2`, `comp_block_rel=1.35`, `min_group=3`; baseline `lap_threshold=745.0` (F1 dev tốt nhất). Không chỉnh lại sau khi thấy số trên eval. **Công khai:** trước khi có gold set của học viên đã có một lần chạy prototype đo trên eval bằng nhãn do trợ lý AI gán; các ngưỡng trên không đổi sau lần đó (riêng `noref_lap`/`noref_mean` đặt lại theo trung vị ảnh sạch dev, chỉ dùng cho ablation). Commit chốt ngưỡng: TODO (chưa commit). |
+| Threshold policy (chọn trên dev như thế nào) | Mọi ngưỡng/trọng số chỉ được chọn bằng cách quan sát split **dev** (56 ảnh, 28 ảnh lỗi theo gold set). Giá trị chốt nằm trong `configs/lab.yaml` → `params` (kiểm bằng `python -m tools.calibrate_t02`, chỉ đọc nhãn dev): `blur_lap_rel=-2.5`, `dark_bright_rel=-1.0`, `glare_sat_rel=0.005`, `glare_bright_rel=0.2`, `comp_block_rel=1.35`, `min_group=3`; baseline `lap_threshold=745.0` (F1 dev tốt nhất). Không chỉnh lại sau khi thấy số trên eval. **Công khai:** trước khi có gold set của học viên đã có một lần chạy prototype đo trên eval bằng nhãn do trợ lý AI gán; các ngưỡng trên không đổi sau lần đó (riêng `noref_lap`/`noref_mean` đặt lại theo trung vị ảnh sạch dev, chỉ dùng cho ablation). Commit chứa ngưỡng: `5b7db6f` (2026-11-15 10:42 +0700), được tạo sau khi đã có số đo; giá trị ngưỡng không đổi giữa lúc chốt trên dev và lúc commit. |
 | Eval split (không dùng để tune) | `eval` (40 ảnh, 20 ảnh lỗi theo gold set). Baseline và PoC dùng cùng pool, cùng B, cùng seed. |
 | Chỉ số lỗi xấu (miss / false alarm / false reject) | Miss = ảnh lỗi thật nằm ngoài top-B (làm giảm Recall). False alarm = ảnh sạch nằm trong top-B (báo theo slice `light`, đã có trong evaluator). |
 | Slices sẽ báo cáo (≥2) | `light` (day / dusk / night), loại lỗi (`defect_type`: blur / dark / glare / compression) và `camera_id` (cam_A / cam_B, tính thêm bằng script riêng) |
 | Cách báo độ bất định khi N nhỏ (Wilson CI / bootstrap) | N = 40 (20 ảnh lỗi) nên báo kèm khoảng tin cậy Wilson 95% cho Recall@20 và Precision@20, và nêu rõ khác biệt dưới ~1–2 ảnh không có ý nghĩa thống kê. |
-| Ngày giờ chốt + người chốt | 2026-11-14 · Do Hoang Anh (giờ chốt: _điền theo thời điểm commit_) |
+| Ngày giờ chốt + người chốt | 2026-11-14 · Do Hoang Anh (chốt ngưỡng trên dev); commit ghi lại: 2026-11-15 10:42 +0700 (`5b7db6f`) |
 
 ## Gold set (nhãn tự gán, vì repo học viên không có `gt/`)
 

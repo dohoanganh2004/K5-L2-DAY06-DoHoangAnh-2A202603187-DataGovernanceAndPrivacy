@@ -504,25 +504,25 @@
     ]
   },
   "baseline_runtime": {
-    "seconds": 0.2881,
+    "seconds": 0.4201,
     "n_items": 96,
-    "seconds_per_100_items": 0.3,
+    "seconds_per_100_items": 0.438,
     "machine": {
       "python": "3.13.13",
       "platform": "Windows-11-10.0.26300-SP0",
       "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
     },
-    "git_sha": "b0ce8bf"
+    "git_sha": "129a46a"
   },
   "poc_runtime": {
-    "seconds": 0.3388,
+    "seconds": 0.6707,
     "n_items": 96,
-    "seconds_per_100_items": 0.353,
+    "seconds_per_100_items": 0.699,
     "machine": {
       "python": "3.13.13",
       "platform": "Windows-11-10.0.26300-SP0",
       "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel"
     },
-    "git_sha": "b0ce8bf"
+    "git_sha": "129a46a"
   }
 }

@@ -1,2 +1,2 @@
 member,git_author_name,git_email,role,modules_files,commit_shas,evidence_note,presenter
-Do Hoang Anh,dohoanganh2004,dohoanganh92004@gmail.com,Individual (all roles: lead / data / core algorithm / QA / review + report),src/pipeline.py; src/*.py; tests/; reports/; tools/label_tool.html; configs/lab.yaml,TODO: dien sau khi commit,Lam ca nhan; can giang vien xac nhan cach dien bang dong gop khi khong co nhom,yes
+Do Hoang Anh,dohoanganh2004,dohoanganh92004@gmail.com,Individual (all roles: lead / data / core algorithm / QA / review + report),src/pipeline.py; src/*.py; tests/; reports/; tools/label_tool.html; configs/lab.yaml,a738bcf; 5b7db6f; 4b2239a; 129a46a,Lam ca nhan; can giang vien xac nhan cach dien bang dong gop khi khong co nhom,yes
