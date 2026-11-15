@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T02 Label Tool</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1d2330; --muted: #667085; --line: #d9dde5;
+    --accent: #2457d6; --ok: #1a7f4b; --warn: #b54708;
+    --none: #1a7f4b; --blur: #7a3fc1; --dark: #34405a; --glare: #c77700; --compression: #c0392b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171d; --card: #1d222b; --text: #e8ebf1; --muted: #98a2b3; --line: #343b48; --accent: #6b93ff; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, "Segoe UI", sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); padding: 10px 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  h1 { font-size: 17px; margin: 0 12px 0 0; }
+  button, select, label.btn { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; }
+  button:hover, label.btn:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  input[type=file] { display: none; }
+  .muted { color: var(--muted); }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  .empty { text-align: center; padding: 60px 16px; color: var(--muted); }
+  .empty ol { display: inline-block; text-align: left; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+  .card img { width: 100%; height: auto; display: block; border-radius: 6px; cursor: zoom-in; background: #000; }
+  .meta { display: flex; justify-content: space-between; margin: 8px 2px 6px; font-size: 14px; }
+  .meta b { font-weight: 600; }
+  .opts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .opt { flex: 1 1 auto; min-width: 86px; text-align: center; padding: 7px 8px; border: 2px solid var(--line); border-radius: 6px; cursor: pointer; user-select: none; font-size: 14px; background: var(--card); }
+  .opt:hover { border-color: var(--accent); }
+  .opt.sel.none { background: var(--none); border-color: var(--none); color: #fff; }
+  .opt.sel.blur { background: var(--blur); border-color: var(--blur); color: #fff; }
+  .opt.sel.dark { background: var(--dark); border-color: var(--dark); color: #fff; }
+  .opt.sel.glare { background: var(--glare); border-color: var(--glare); color: #fff; }
+  .opt.sel.compression { background: var(--compression); border-color: var(--compression); color: #fff; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin: 0 0 12px; gap: 10px; flex-wrap: wrap; }
+  #modal { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 20; cursor: zoom-out; }
+  #modal img { max-width: 96vw; max-height: 94vh; image-rendering: auto; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; width: 160px; }
+  .bar > div { height: 100%; background: var(--ok); width: 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <h1>T02 Label Tool</h1>
+    <label class="btn" for="dir">1. Chọn thư mục ảnh</label>
+    <input id="dir" type="file" webkitdirectory multiple accept="image/*">
+    <label class="btn" for="csv">2. (Tuỳ chọn) Chọn images.csv</label>
+    <input id="csv" type="file" accept=".csv,text/csv">
+    <select id="splitSel" title="Lọc theo split" disabled><option value="all">Tất cả split</option></select>
+    <button id="export" class="primary" disabled>Xuất CSV</button>
+    <button id="reset" disabled>Xoá nhãn</button>
+    <span class="muted" id="progress"></span>
+    <div class="bar"><div id="barFill"></div></div>
+  </div>
+</header>
+<main id="main">
+  <div class="empty">
+    <p><b>Cách dùng</b></p>
+    <ol>
+      <li>Bấm <b>Chọn thư mục ảnh</b> và chọn <code>fixtures\t02_raw_qc\images</code>.</li>
+      <li>(Tuỳ chọn) Chọn <code>fixtures\t02_raw_qc\images.csv</code> để lọc theo split dev/eval.</li>
+      <li>Với mỗi ảnh, bấm một trong 5 nhãn. Bấm vào ảnh để phóng to.</li>
+      <li>Bấm <b>Xuất CSV</b> để tải file nhãn của bạn.</li>
+    </ol>
+    <p class="hint">Nhãn được tự lưu trong trình duyệt, tắt trang rồi mở lại vẫn còn (chọn lại thư mục ảnh).</p>
+  </div>
+</main>
+<div id="modal"><img id="modalImg" alt=""></div>
+
+<script>
+(function () {
+  "use strict";
+  var LABELS = [
+    ["none", "none (bình thường)"], ["blur", "blur (mờ)"], ["dark", "dark (tối)"],
+    ["glare", "glare (lóa)"], ["compression", "compression (ô vuông)"]
+  ];
+  var KEY = "t02_labels_v1";
+  var images = [];          // {id, url, split, light, camera}
+  var meta = {};            // id -> {split, light, camera}
+  var labels = {};          // id -> label
+  var scenes = [];          // [{key, items:[...]}]
+  var cur = 0;
+
+  function load() { try { labels = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { labels = {}; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(labels)); } catch (e) { /* storage may be blocked */ } }
+  function $(id) { return document.getElementById(id); }
+  function sceneKey(id) { return id.replace(/_\d+$/, ""); }
+
+  function parseCsv(text) {
+    var lines = text.replace(/\r/g, "").split("\n").filter(function (l) { return l.trim() !== ""; });
+    if (!lines.length) return [];
+    var head = lines[0].split(",").map(function (s) { return s.trim(); });
+    return lines.slice(1).map(function (l) {
+      var c = l.split(","), o = {};
+      head.forEach(function (h, i) { o[h] = (c[i] || "").trim(); });
+      return o;
+    });
+  }
+
+  function rebuildScenes() {
+    var f = $("splitSel").value;
+    var map = {}, order = [];
+    images.forEach(function (im) {
+      var m = meta[im.id] || {};
+      if (f !== "all" && m.split !== f) return;
+      var k = sceneKey(im.id);
+      if (!map[k]) { map[k] = []; order.push(k); }
+      map[k].push(im);
+    });
+    scenes = order.sort().map(function (k) {
+      return { key: k, items: map[k].sort(function (a, b) { return a.id < b.id ? -1 : 1; }) };
+    });
+    if (cur >= scenes.length) cur = 0;
+  }
+
+  function counts() {
+    var shown = 0, done = 0;
+    scenes.forEach(function (s) { s.items.forEach(function (im) { shown++; if (labels[im.id]) done++; }); });
+    return { shown: shown, done: done };
+  }
+
+  function render() {
+    var main = $("main");
+    var has = images.length > 0;
+    $("export").disabled = !has; $("reset").disabled = !has;
+    if (!has) return;
+    var c = counts();
+    $("progress").textContent = "Đã gán " + c.done + "/" + c.shown + " ảnh";
+    $("barFill").style.width = (c.shown ? 100 * c.done / c.shown : 0) + "%";
+    if (!scenes.length) { main.innerHTML = '<div class="empty">Không có ảnh nào trong split này.</div>'; return; }
+    var s = scenes[cur];
+    var html = '<div class="nav"><button id="prev">&larr; Cảnh trước</button>' +
+      '<b>Cảnh ' + s.key + '</b><span class="muted">(' + (cur + 1) + '/' + scenes.length + ')</span>' +
+      '<button id="next">Cảnh sau &rarr;</button></div><div class="grid">';
+    s.items.forEach(function (im) {
+      var m = meta[im.id] || {};
+      var info = [m.split, m.light, m.camera].filter(Boolean).join(" · ");
+      html += '<div class="card"><img src="' + im.url + '" alt="' + im.id + '" data-zoom="' + im.url + '">' +
+        '<div class="meta"><b>' + im.id + '</b><span class="muted">' + info + '</span></div><div class="opts">';
+      LABELS.forEach(function (l) {
+        html += '<div class="opt ' + l[0] + (labels[im.id] === l[0] ? " sel" : "") + '" data-id="' + im.id + '" data-label="' + l[0] + '">' + l[1] + '</div>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div><div class="hint">Mẹo: so sánh 4 ảnh cùng cảnh. Ảnh lỗi khác 3 ảnh còn lại. Một cảnh thường có ảnh bình thường lẫn ảnh lỗi.</div>';
+    main.innerHTML = html;
+    $("prev").onclick = function () { cur = (cur - 1 + scenes.length) % scenes.length; render(); window.scrollTo(0, 0); };
+    $("next").onclick = function () { cur = (cur + 1) % scenes.length; render(); window.scrollTo(0, 0); };
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.classList && t.classList.contains("opt")) {
+      var id = t.getAttribute("data-id"), lab = t.getAttribute("data-label");
+      if (labels[id] === lab) delete labels[id]; else labels[id] = lab;   // click again to clear
+      save(); render(); return;
+    }
+    if (t.getAttribute && t.getAttribute("data-zoom")) {
+      $("modalImg").src = t.getAttribute("data-zoom"); $("modal").style.display = "flex"; return;
+    }
+    if (t.id === "modal" || t.id === "modalImg") $("modal").style.display = "none";
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") $("modal").style.display = "none";
+    if (!scenes.length) return;
+    if (e.key === "ArrowRight") { cur = (cur + 1) % scenes.length; render(); }
+    if (e.key === "ArrowLeft") { cur = (cur - 1 + scenes.length) % scenes.length; render(); }
+  });
+
+  $("dir").addEventListener("change", function (e) {
+    images.forEach(function (im) { URL.revokeObjectURL(im.url); });
+    images = Array.prototype.filter.call(e.target.files, function (f) { return /\.(jpe?g|png)$/i.test(f.name); })
+      .map(function (f) { return { id: f.name.replace(/\.[^.]+$/, ""), url: URL.createObjectURL(f) }; });
+    cur = 0; rebuildScenes(); render();
+  });
+
+  $("csv").addEventListener("change", function (e) {
+    var f = e.target.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      var rows = parseCsv(String(r.result)), splits = {};
+      meta = {};
+      rows.forEach(function (o) {
+        if (!o.image_id) return;
+        meta[o.image_id] = { split: o.split, light: o.light, camera: o.camera_id };
+        if (o.split) splits[o.split] = 1;
+      });
+      var sel = $("splitSel"); sel.innerHTML = '<option value="all">Tất cả split</option>';
+      Object.keys(splits).sort().forEach(function (s) { var o = document.createElement("option"); o.value = s; o.textContent = "Chỉ " + s; sel.appendChild(o); });
+      sel.disabled = false; cur = 0; rebuildScenes(); render();
+    };
+    r.readAsText(f);
+  });
+  $("splitSel").addEventListener("change", function () { cur = 0; rebuildScenes(); render(); });
+
+  $("export").addEventListener("click", function () {
+    var left = images.filter(function (im) { return !labels[im.id]; }).length;
+    if (left && !confirm("Còn " + left + " ảnh chưa gán nhãn (sẽ để trống trong CSV). Vẫn xuất?")) return;
+    var out = ["image_id,defect_type,is_defect,split,light,camera_id"];
+    images.slice().sort(function (a, b) { return a.id < b.id ? -1 : 1; }).forEach(function (im) {
+      var l = labels[im.id] || "", m = meta[im.id] || {};
+      out.push([im.id, l, l === "" ? "" : (l === "none" ? 0 : 1), m.split || "", m.light || "", m.camera || ""].join(","));
+    });
+    var blob = new Blob([out.join("\n") + "\n"], { type: "text/csv" });
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "my_gold_labels.csv";
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  $("reset").addEventListener("click", function () {
+    if (confirm("Xoá toàn bộ nhãn đã gán?")) { labels = {}; save(); render(); }
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>
